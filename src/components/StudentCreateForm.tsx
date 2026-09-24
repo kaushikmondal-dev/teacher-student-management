@@ -1,6 +1,7 @@
 "use client";
 
 import { studentFormSchema, StudentFormType } from "@/lib/zodSchema";
+import { Teacher } from "@generated/prisma/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2Icon, UserPenIcon } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
@@ -16,24 +17,25 @@ import {
   SelectValue,
 } from "./shadcnui/select";
 
-const StudentCreateForm = () => {
+type StudentCreateFormProps = {
+  teachers: Teacher[];
+};
+
+const StudentCreateForm = ({ teachers }: StudentCreateFormProps) => {
   const {
     handleSubmit,
     control,
     formState: { isSubmitting },
-  } = useForm({
+  } = useForm<StudentFormType>({
     resolver: zodResolver(studentFormSchema),
     defaultValues: {
       name: "",
       teacherId: "",
     },
-
     mode: "all",
   });
 
   const CreateStudentHandler = async (uData: StudentFormType) => {
-    // await new Promise<void>((resolve) => setTimeout(resolve, 1500));
-
     console.log(uData);
   };
 
@@ -57,7 +59,6 @@ const StudentCreateForm = () => {
                 placeholder="Enter Student Name"
                 autoComplete="off"
               />
-
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
@@ -68,27 +69,33 @@ const StudentCreateForm = () => {
           control={control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor={field.name}>Subject</FieldLabel>
+              <FieldLabel htmlFor={field.name}>Teacher</FieldLabel>
               <Select
                 value={field.value}
                 onValueChange={field.onChange}>
                 <SelectTrigger
                   id={field.name}
                   aria-invalid={fieldState.invalid}>
-                  <SelectValue placeholder="Select Teacher" />
+                  <SelectValue placeholder="Select Teacher">
+                    {teachers.find((t) => t.id === field.value)?.name}
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="tid001">Teacher Name</SelectItem>
+                  {teachers.map((teacher) => (
+                    <SelectItem
+                      key={teacher.id}
+                      value={teacher.id}>
+                      {teacher.name}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
-
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
         />
       </CardContent>
       <CardFooter>
-        {" "}
         <Button
           type="submit"
           className="w-full"

@@ -1,5 +1,6 @@
 import { Card, CardHeader, CardTitle } from "@/components/shadcnui/card";
 import StudentCreateForm from "@/components/StudentCreateForm";
+import prisma from "@/lib/dbClient/prisma";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -7,14 +8,15 @@ export const metadata: Metadata = {
   description: "Student page of Teacher Student management App",
 };
 
-const page = () => {
+const page = async () => {
+  const allTeachers = await prisma.teacher.findMany();
   return (
     <section className="grid h-dvh place-items-center">
       <Card className="w-sm">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl">Create Student</CardTitle>
         </CardHeader>
-        <StudentCreateForm />
+        <StudentCreateForm teachers={allTeachers} />
       </Card>
     </section>
   );
