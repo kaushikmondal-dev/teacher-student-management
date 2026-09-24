@@ -23,6 +23,6 @@ model Student {
     id   String @id @default(uuid())
     name String
 
-    teacher   Teacher? @relation(fields: [teacherId], references: [id])
-    teacherId String?
+    teacher   Teacher @relation(fields: [teacherId], references: [id])
+    teacherId String
 }
