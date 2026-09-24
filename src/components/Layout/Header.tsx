@@ -1,4 +1,6 @@
+import { PlusIcon } from "lucide-react";
 import Link from "next/link";
+import { buttonVariants } from "../shadcnui/button";
 import ThemeToggleButton from "./ThemeToggleButton";
 
 const Header = () => {
@@ -11,12 +13,23 @@ const Header = () => {
           <h1
             className="text-2xl font-semibold"
             aria-label="App Name">
-            NSF App
+            Teacher-Student-Management
           </h1>
         </Link>
 
         <nav className="flex items-center gap-4">
-          <Link href={"/"}>Home</Link>
+          <Link
+            href={"/create"}
+            className={buttonVariants({ variant: "default" })}>
+            <PlusIcon />
+            Student
+          </Link>
+          <Link
+            href={"/create/teacher"}
+            className={buttonVariants({ variant: "secondary" })}>
+            <PlusIcon />
+            Teacher
+          </Link>
 
           <ThemeToggleButton />
         </nav>
