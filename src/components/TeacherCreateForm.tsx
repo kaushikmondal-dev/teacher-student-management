@@ -1,8 +1,10 @@
 "use client";
 
 import { teacherFormSchema, TeacherFormType } from "@/lib/zodSchema";
+import { createTeacher } from "@/server/createTeacher";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2Icon, UserPenIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { Button } from "./shadcnui/button";
 import { CardContent, CardFooter } from "./shadcnui/card";
@@ -15,12 +17,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./shadcnui/select";
+import { toast } from "./shadcnui/toast";
 
 const TeacherCreateForm = () => {
+  const { push } = useRouter();
   const {
     handleSubmit,
     control,
     formState: { isSubmitting },
+    reset,
   } = useForm({
     resolver: zodResolver(teacherFormSchema),
     defaultValues: {
@@ -34,7 +39,23 @@ const TeacherCreateForm = () => {
   const CreateTeacherHandler = async (uData: TeacherFormType) => {
     await new Promise<void>((resolve) => setTimeout(resolve, 1500));
 
-    console.log(uData);
+    const { isSuccess, msg } = await createTeacher(uData);
+
+    if (isSuccess) {
+      toast.add({
+        title: "success",
+        description: msg,
+        type: "success",
+      });
+      reset();
+      push("/create");
+    } else {
+      toast.add({
+        title: "Error",
+        description: msg,
+        type: "error",
+      });
+    }
   };
 
   return (
