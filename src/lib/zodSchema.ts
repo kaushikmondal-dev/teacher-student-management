@@ -9,7 +9,7 @@ export type TeacherFormType = z.infer<typeof teacherFormSchema>;
 
 export const studentFormSchema = z.object({
   name: z.string().min(1, { error: "Name is required" }),
-  teacherId: z.string().uuid().optional().nullable(),
+  teacherId: z.string().min(4, { error: "Teacher is required" }),
 });
 
 export type StudentFormType = z.infer<typeof studentFormSchema>;

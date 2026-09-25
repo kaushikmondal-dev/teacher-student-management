@@ -1,10 +1,16 @@
 "use client";
 
 import { studentFormSchema, StudentFormType } from "@/lib/zodSchema";
+import { createStudent } from "@/server/createStudent";
 import { Teacher } from "@generated/prisma/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2Icon, UserPenIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useFilePicker } from "use-file-picker";
+import { FileSizeValidator } from "use-file-picker/validators";
+import { Avatar, AvatarFallback, AvatarImage } from "./shadcnui/avatar";
 import { Button } from "./shadcnui/button";
 import { CardContent, CardFooter } from "./shadcnui/card";
 import { Field, FieldError, FieldLabel } from "./shadcnui/field";
@@ -16,16 +22,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./shadcnui/select";
+import { toast } from "./shadcnui/toast";
 
 type StudentCreateFormProps = {
   teachers: Teacher[];
 };
 
 const StudentCreateForm = ({ teachers }: StudentCreateFormProps) => {
+  const [isFile, setIsFile] = useState(false);
+  const { push } = useRouter();
   const {
     handleSubmit,
     control,
     formState: { isSubmitting },
+    reset,
   } = useForm<StudentFormType>({
     resolver: zodResolver(studentFormSchema),
     defaultValues: {
@@ -35,8 +45,36 @@ const StudentCreateForm = ({ teachers }: StudentCreateFormProps) => {
     mode: "all",
   });
 
+  const { openFilePicker, filesContent, plainFiles, clear } = useFilePicker({
+    multiple: false,
+    accept: "image/*",
+    readAs: "DataURL",
+
+    onFilesSuccessfullySelected: () => setIsFile(true),
+    onClear: () => setIsFile(false),
+
+    validators: [new FileSizeValidator({ maxFileSize: 5 * 1024 * 1024 })],
+  });
+
   const CreateStudentHandler = async (uData: StudentFormType) => {
-    console.log(uData);
+    const { isSuccess, msg } = await createStudent(uData, plainFiles[0]);
+
+    if (isSuccess) {
+      toast.add({
+        title: "success",
+        description: msg,
+        type: "success",
+      });
+      reset();
+      clear();
+      push("/");
+    } else {
+      toast.add({
+        title: "Error",
+        description: msg,
+        type: "error",
+      });
+    }
   };
 
   return (
@@ -45,6 +83,31 @@ const StudentCreateForm = ({ teachers }: StudentCreateFormProps) => {
       className="grid gap-4"
       noValidate>
       <CardContent>
+        {!isFile && (
+          <button
+            type="button"
+            onClick={openFilePicker}
+            className="grid place-items-center">
+            <Avatar className="size-64">
+              <AvatarImage src="https://placehold.co/256.jpeg" />
+              <AvatarFallback>Select Image</AvatarFallback>
+            </Avatar>
+          </button>
+        )}
+
+        {filesContent.map(({ size, content, name }) => (
+          <button
+            key={size}
+            type="button"
+            onClick={openFilePicker}
+            className="grid place-items-center">
+            <Avatar className="size-64">
+              <AvatarImage src={content} />
+              <AvatarFallback>{name}</AvatarFallback>
+            </Avatar>
+          </button>
+        ))}
+
         <Controller
           name="name"
           control={control}
@@ -99,7 +162,7 @@ const StudentCreateForm = ({ teachers }: StudentCreateFormProps) => {
         <Button
           type="submit"
           className="w-full"
-          disabled={isSubmitting}>
+          disabled={isSubmitting || !isFile}>
           {isSubmitting ?
             <>
               <Loader2Icon className="animate-spin" />

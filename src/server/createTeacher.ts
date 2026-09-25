@@ -21,7 +21,7 @@ export const createTeacher = async (uData: TeacherFormType) => {
     if (error instanceof Error) {
       return {
         isSuccess: false,
-        msg: "Somthing want to Worng, try later ❌!!",
+        msg: "Somthing went to Worng, try later ❌!!",
       };
     }
     return {
