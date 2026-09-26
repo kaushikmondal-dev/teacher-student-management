@@ -1,7 +1,7 @@
 "use client";
 
 import { StudentGetPayload } from "@generated/prisma/models";
-import { RefreshCw } from "lucide-react";
+import { GraduationCap, Mail, Phone, RefreshCw, School } from "lucide-react";
 import { Route } from "next";
 import Link from "next/link";
 import DeleteStudentButton from "./DeleteStudentButton";
@@ -43,9 +43,32 @@ const StudentCard = ({ stuD }: StudentCardProps) => {
           {stuD.teacher.name}
           <Badge variant="default">{stuD.teacher.subject}</Badge>
         </div>
+        <Separator />
+        <div className="grid grid-cols-2 gap-2">
+          <div className="grid gap-2">
+            <p className="flex items-center gap-1 text-sm">
+              <School className="h-4 w-4 justify-center rounded-full bg-gray-500 p-1 text-white" />
+              School: {stuD.school}
+            </p>
+            <p className="flex items-center gap-1 text-sm">
+              <Mail className="h-4 w-4 justify-center rounded-full bg-gray-500 p-1 text-white" />
+              Email: {stuD.email}
+            </p>
+          </div>
+          <div className="grid gap-2">
+            <p className="flex items-center gap-1 text-sm">
+              <GraduationCap className="h-4 w-4 justify-center rounded-full bg-gray-500 p-1 text-white" />
+              Grade: {stuD.grade}
+            </p>
+            <p className="flex items-center gap-1 text-sm">
+              <Phone className="h-4 w-4 justify-center rounded-full bg-gray-500 p-1 text-white" />
+              Phone: {stuD.phone}
+            </p>
+          </div>
+        </div>
       </CardContent>
-      <Separator />
-      <CardFooter className="grid grid-cols-2 gap-4">
+
+      <CardFooter className="grid grid-cols-2 gap-8">
         <DeleteStudentButton
           studId={stuD.id}
           studImage={stuD.image}

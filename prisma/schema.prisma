@@ -20,9 +20,13 @@ model Teacher {
 }
 
 model Student {
-    id    String @id @default(uuid())
-    name  String
-    image String @unique
+    id     String @id @default(uuid())
+    name   String
+    image  String @unique
+    email  String @unique
+    phone  String
+    school String
+    grade  String
 
     teacher   Teacher @relation(fields: [teacherId], references: [id])
     teacherId String

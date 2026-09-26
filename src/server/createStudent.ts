@@ -28,6 +28,11 @@ export const createStudent = async (uData: StudentFormType, imgFile: File) => {
         name: uData.name,
         image: imageUrl,
         teacherId: uData.teacherId,
+
+        school: uData.school,
+        grade: uData.grade,
+        email: uData.email,
+        phone: uData.phone,
       },
     });
 

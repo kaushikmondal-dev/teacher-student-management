@@ -41,6 +41,10 @@ const UpdateStudentDetails = ({
     defaultValues: {
       name: student.name,
       teacherId: student.teacherId,
+      email: student.email,
+      phone: student.phone,
+      school: student.school,
+      grade: student.grade,
     },
     mode: "all",
   });
@@ -114,6 +118,91 @@ const UpdateStudentDetails = ({
                       key={teacher.id}
                       value={teacher.id}>
                       {teacher.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+        <Controller
+          name="email"
+          control={control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor={field.name}>Email</FieldLabel>
+              <Input
+                {...field}
+                id={field.name}
+                type="email"
+                aria-invalid={fieldState.invalid}
+                placeholder="Enter Student Email"
+                autoComplete="off"
+              />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+
+        <Controller
+          name="phone"
+          control={control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor={field.name}>Phone</FieldLabel>
+              <Input
+                {...field}
+                id={field.name}
+                type="tel"
+                aria-invalid={fieldState.invalid}
+                placeholder="Enter Phone Number"
+                autoComplete="off"
+              />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+
+        <Controller
+          name="school"
+          control={control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor={field.name}>School</FieldLabel>
+              <Input
+                {...field}
+                id={field.name}
+                type="text"
+                aria-invalid={fieldState.invalid}
+                placeholder="Enter School Name"
+                autoComplete="off"
+              />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+
+        <Controller
+          name="grade"
+          control={control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor={field.name}>Grade</FieldLabel>
+              <Select
+                value={field.value}
+                onValueChange={field.onChange}>
+                <SelectTrigger
+                  id={field.name}
+                  aria-invalid={fieldState.invalid}>
+                  <SelectValue placeholder="Select Grade" />
+                </SelectTrigger>
+                <SelectContent>
+                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((g) => (
+                    <SelectItem
+                      key={g}
+                      value={String(g)}>
+                      Class {g}
                     </SelectItem>
                   ))}
                 </SelectContent>
