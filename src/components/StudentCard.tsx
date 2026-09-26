@@ -2,6 +2,7 @@
 
 import { StudentGetPayload } from "@generated/prisma/models";
 import { RefreshCw } from "lucide-react";
+import { Route } from "next";
 import Link from "next/link";
 import DeleteStudentButton from "./DeleteStudentButton";
 import { Avatar, AvatarFallback, AvatarImage } from "./shadcnui/avatar";
@@ -50,7 +51,7 @@ const StudentCard = ({ stuD }: StudentCardProps) => {
           studImage={stuD.image}
         />
         <Link
-          href={"/"}
+          href={`/${stuD.id}` as Route}
           className={buttonVariants({ variant: "outline" })}>
           <RefreshCw />
           Update
