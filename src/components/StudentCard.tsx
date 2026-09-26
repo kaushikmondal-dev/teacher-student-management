@@ -1,11 +1,12 @@
 "use client";
 
 import { StudentGetPayload } from "@generated/prisma/models";
-import { RefreshCw, Trash2 } from "lucide-react";
+import { RefreshCw } from "lucide-react";
 import Link from "next/link";
+import DeleteStudentButton from "./DeleteStudentButton";
 import { Avatar, AvatarFallback, AvatarImage } from "./shadcnui/avatar";
 import { Badge } from "./shadcnui/badge";
-import { Button, buttonVariants } from "./shadcnui/button";
+import { buttonVariants } from "./shadcnui/button";
 import {
   Card,
   CardContent,
@@ -44,10 +45,10 @@ const StudentCard = ({ stuD }: StudentCardProps) => {
       </CardContent>
       <Separator />
       <CardFooter className="grid grid-cols-2 gap-4">
-        <Button variant="destructive">
-          <Trash2 />
-          Delete
-        </Button>
+        <DeleteStudentButton
+          studId={stuD.id}
+          studImage={stuD.image}
+        />
         <Link
           href={"/"}
           className={buttonVariants({ variant: "outline" })}>
