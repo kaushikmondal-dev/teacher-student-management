@@ -10,6 +10,7 @@ export const metadata: Metadata = {
 
 const page = async () => {
   const allTeachers = await prisma.teacher.findMany();
+
   return (
     <section className="grid h-dvh place-items-center">
       <Card className="w-sm">

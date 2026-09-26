@@ -31,6 +31,8 @@ const page = async ({ params }: EdidpageProps) => {
     return notFound();
   }
 
+  const allTeachers = await prisma.teacher.findMany();
+
   return (
     <section className="grid h-dvh place-items-center">
       <Card className="w-sm">
@@ -47,7 +49,10 @@ const page = async ({ params }: EdidpageProps) => {
         <CardHeader className="text-center">
           <CardTitle className="text-xl">Update Student Details</CardTitle>
         </CardHeader>
-        <UpdateStudentDetails />
+        <UpdateStudentDetails
+          student={student}
+          teachers={allTeachers}
+        />
       </Card>
     </section>
   );

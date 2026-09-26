@@ -1,6 +1,6 @@
 "use client";
 
-import { Loader2Icon, RefreshCcw } from "lucide-react";
+import { Loader2Icon, UserPenIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useFilePicker } from "use-file-picker";
@@ -99,8 +99,8 @@ const UpdateAvatar = ({ studId, studPrevImage }: UpdateAvatarProps) => {
               Updating Student Avatar...
             </>
           : <>
-              <RefreshCcw />
-              Update
+              <UserPenIcon />
+              Update Avatar
             </>
           }
         </Button>

@@ -56,7 +56,9 @@ const StudentCreateForm = ({ teachers }: StudentCreateFormProps) => {
     validators: [new FileSizeValidator({ maxFileSize: 5 * 1024 * 1024 })],
   });
 
-  const CreateStudentHandler = async (uData: StudentFormType) => {
+  const createStudentHandler = async (uData: StudentFormType) => {
+    await new Promise<void>((resolve) => setTimeout(resolve, 1500));
+
     const { isSuccess, msg } = await createStudent(uData, plainFiles[0]);
 
     if (isSuccess) {
@@ -79,7 +81,7 @@ const StudentCreateForm = ({ teachers }: StudentCreateFormProps) => {
 
   return (
     <form
-      onSubmit={handleSubmit(CreateStudentHandler)}
+      onSubmit={handleSubmit(createStudentHandler)}
       className="grid gap-4"
       noValidate>
       <CardContent>
